@@ -36,5 +36,6 @@ jobs:
       - name: Run upload script
         env:
           M_TOKEN: ${{ secrets.M_TOKEN }}
+          MONGO_URL: ${{secrets.MONGO_URL}}
         run: |
           python mega_code_test.py
