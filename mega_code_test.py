@@ -8,12 +8,13 @@ keys = os.getenv("M_TOKEN")
 keys = keys.split("_")
 
 m = mega.login(keys[0],keys[1])
-all_files = m.get_files()
+links = ['https://mega.co.nz/#!c5RSnYxb!Cd2nQuZyoFVQhs-ZVhAQG6d5_ZtxmOaAk-bFyMzinGs',
+         'https://mega.nz/file/1oo3mBKT#ZJYcXjEA8HvW4XfJq5Bo1Tjd-Yvs1YvZM9N-1bQpoEc']
 
-folder_handler = next(
-            (folder for folder in all_files.values() if folder['a']['n'] == "audio.mp3" and folder['t'] == 0),
-            None
-        )
 
-file_link = m.export('audio.mp3')
-print(file_link,folder_handler)
+for link in links:
+    try:
+        file = m.download_url(link)
+        print(f"File downloaded: {file}")
+    except Exception as e:
+        print(f"Error processing link {link}: {e}")
