@@ -5,9 +5,9 @@ from mega import Mega
 mega  = Mega()
 
 keys = os.getenv("M_TOKEN")
-[email,password] = keys.split("_")
+keys = keys.split("_")
 
-m = mega.login(email,password)
+m = mega.login(keys[0],keys[1])
 all_files = m.get_files()
 
 folder_handler = next(
