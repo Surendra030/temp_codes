@@ -51,7 +51,8 @@ def add_moving_logo(inputfile, outputname, logoimage):
         # Create the logo clip
         logo = (mp.ImageClip(logoimage)
           .set_duration(video.duration)  # Match the video duration
-          .resize(height=150, resample=Image.Resampling.LANCZOS)  # Resize the logo
+          .resize(height=150)
+
           .set_position(moving_position))
         # Add the logo to the video
         final = mp.CompositeVideoClip([video, logo])
