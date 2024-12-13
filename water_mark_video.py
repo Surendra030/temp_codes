@@ -1,7 +1,6 @@
 from mega import Mega
 import moviepy.editor as mp
 import random
-from PIL import Image
 import os
 
 
@@ -11,8 +10,6 @@ mega = Mega()
 
 
 def add_moving_logo(inputfile, outputname, logoimage):
-    inputfile = str(inputfile)
-
     try:
         # Load the video
         video = mp.VideoFileClip(inputfile)
@@ -50,9 +47,9 @@ def add_moving_logo(inputfile, outputname, logoimage):
 
         # Create the logo clip
         logo = (mp.ImageClip(logoimage)
-                .set_duration(video.duration)  # Match video duration
-                .resize(height=150)  # Use LANCZOS for resizing
-                .set_position(moving_position))  # Dynamic position
+                  .set_duration(video.duration)  # Match the video duration
+                  .resize(height=150)  # Resize the logo if needed
+                  .set_position(moving_position))  # Set moving position
 
         # Add the logo to the video
         final = mp.CompositeVideoClip([video, logo])
