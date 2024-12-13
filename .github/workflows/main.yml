@@ -7,36 +7,59 @@ on:
   workflow_dispatch:  # Allow the workflow to be triggered manually
 
 jobs:
-  upload-to-mega:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
-    
+  download-files:
+    runs-on: ubuntu-latest
+
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      # Step 2: Set up Python environment
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.11.6'  # Use Python 3.10 for compatibility
-      
-      
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: |
-          sudo apt-get install -y poppler-utils
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
 
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y poppler-utils
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
+    - name: Download files from Mega
+      run: |
+        python download_files.py
 
+    - name: Upload downloaded files as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mega-files
+        path: ./downloaded-files
+        retention-days: 1
 
-      
-      # Step 6: Run the Python script
-      - name: Run upload script
-        env:
-          M_TOKEN: ${{ secrets.M_TOKEN }}
-          MONGO_URL: ${{ secrets.MONGO_URL }}
-        run: |
-          python water_mark_video.py
+  process-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y poppler-utils
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: mega-files  # Match the artifact name from the first job
+        path: ./downloaded-files  # Location to save downloaded files
+        retention-days: 1
+    - name: Process and upload files
+      run: |
+        python process_and_upload.py
