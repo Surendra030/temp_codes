@@ -1,0 +1,7 @@
+pymongo
+moviepy==1.0.0
+Pillow
+fpdf
+mega.py
+selenium
+python-dotenv

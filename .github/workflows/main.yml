@@ -21,18 +21,18 @@ jobs:
         with:
           python-version: '3.10'  # Use Python 3.10 for compatibility
       
-     
-      - name: Install OCRMyPDF
+      - name: Install Ghostscript
         run: |
           sudo apt-get update
-          sudo apt-get install -y ocrmypdf
-
+          sudo apt-get install -y ghostscript
+      
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           sudo apt-get install -y poppler-utils
 
-          pip install mega.py 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
 
       
@@ -40,6 +40,6 @@ jobs:
       - name: Run upload script
         env:
           M_TOKEN: ${{ secrets.M_TOKEN }}
-          MONGO_URL: ${{secrets.MONGO_URL}}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
         run: |
-          python mega_code_test.py
+          python main_file.py
