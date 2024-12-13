@@ -26,6 +26,9 @@ jobs:
         pip install -r requirements.txt
 
     - name: Download files from Mega
+      env:
+          M_TOKEN: ${{ secrets.M_TOKEN }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
       run: |
         python download_files.py
 
@@ -61,5 +64,8 @@ jobs:
         path: ./downloaded-files  # Location to save downloaded files
         retention-days: 1
     - name: Process and upload files
+      env:
+          M_TOKEN: ${{ secrets.M_TOKEN }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
       run: |
         python process_and_upload.py
