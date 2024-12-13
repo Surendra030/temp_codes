@@ -81,7 +81,7 @@ def fetch_video_file_links(keys, m, all_files):
         print(f"Error fetching video file links: {e}")
     return lst
 
-def mega_download_url(link, name):
+def mega_download_url(link):
     try:
         mega = Mega()
         m = mega.login(keys[0], keys[1])
