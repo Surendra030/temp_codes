@@ -10,6 +10,8 @@ mega = Mega()
 
 
 def add_moving_logo(inputfile, outputname, logoimage):
+    inputfile  = str(inputfile)
+    print(inputfile)
     try:
         # Load the video
         video = mp.VideoFileClip(inputfile)
