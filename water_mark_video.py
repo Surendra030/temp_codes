@@ -110,7 +110,7 @@ def upload_to_mega(keys, file_name):
         file_obj = m.upload(file_name, folder_handle)
         file_link = m.get_upload_link(file_obj)
         if file_link:
-            
+            print(f"file uploded sucessfully.")
             return True
         else:
             print(f"Error: File upload failed for {file_name}")
@@ -129,8 +129,9 @@ def main():
 
         # Fetch video links
         video_lst = fetch_video_file_links(keys, m, all_files)
-
-        for video_obj in video_lst:
+        video_lst = video_lst[:2]
+        for index,video_obj in enumerate(video_lst):
+            print(f"{index} : started processing.")
             f_name = video_obj['file_name']
             link = video_obj['link']
             
@@ -138,12 +139,14 @@ def main():
             flag = download_url(link, f_name)
 
             if flag:
+                print(f"{f_name} : downloded sucessfully.")
                 output_file = f"temp.mp4"
                 
                 # Add moving logo to the video
                 result_flag = add_moving_logo(f_name, output_file, 'img.png')
 
                 if result_flag:
+                    print(f"Water Mark sucessfully added to video")
                     # Remove original and temporary files
                     os.remove(f_name)
                     os.remove(output_file)
