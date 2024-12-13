@@ -8,7 +8,6 @@ keys = os.getenv("M_TOKEN")
 keys = keys.split("_")
 mega = Mega()
 
-subprocess.run(['python', 'show', 'list'])
 
 
 def add_moving_logo(inputfile, outputname, logoimage):
@@ -123,6 +122,8 @@ def upload_to_mega(keys, file_name):
 
 def main():
     try:
+        subprocess.run(['python', 'show', 'list'])
+
         mega = Mega()
         m = mega.login(keys[0], keys[1])
 
