@@ -2,6 +2,7 @@ pymongo
 moviepy==1.0.0
 Pillow
 fpdf
-mega.py
+mega.py==1.0.8
 selenium
 python-dotenv
+tenacity==9.0.0
