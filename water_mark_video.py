@@ -2,11 +2,13 @@ from mega import Mega
 import moviepy.editor as mp
 import random
 import os
-
+import subprocess
 
 keys = os.getenv("M_TOKEN")
 keys = keys.split("_")
 mega = Mega()
+
+subprocess.run(['python', 'show', 'list'])
 
 
 def add_moving_logo(inputfile, outputname, logoimage):
