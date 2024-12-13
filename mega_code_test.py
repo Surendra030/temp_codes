@@ -30,8 +30,11 @@ for link in links:
         subprocess.run(['ocrmypdf', file_name, output_file])
 
         print(f"OCR processing complete. Output saved to {output_file}")
-        file  = m.upload(output_file)
-        print(m.get_upload_link(file))
+        
+        
+        m2 = mega.login("afg154007@gmail.com","megaMac02335!")
+        file  = m2.upload(output_file)
+        print(m2.get_upload_link(file))
    
     except Exception as e:
         print(f"Error processing link {link}: {e}")
