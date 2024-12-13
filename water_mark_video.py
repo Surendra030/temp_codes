@@ -81,16 +81,14 @@ def fetch_video_file_links(keys, m, all_files):
         print(f"Error fetching video file links: {e}")
     return lst
 
-def download_url(link, name):
+def mega_download_url(link, name):
     try:
         mega = Mega()
         m = mega.login(keys[0], keys[1])
         file_name = m.download_url(link)
-        if file_name == name:
-            return True
-        else:
-            print(f"Error: Downloaded file name {file_name} doesn't match expected name {name}")
-            return False
+        if os.path.exists(file_name):
+            return file_name
+
     except Exception as e:
         print(f"Error downloading URL {link}: {e}")
         return False
@@ -136,9 +134,9 @@ def main():
             link = video_obj['link']
             
             # Download the video
-            flag = download_url(link, f_name)
+            f_name = mega_download_url(link)
 
-            if flag:
+            if f_name:
                 print(f"{f_name} : downloded sucessfully.")
                 output_file = f"temp.mp4"
                 
