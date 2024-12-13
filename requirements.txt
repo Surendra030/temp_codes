@@ -5,4 +5,3 @@ fpdf
 mega.py
 selenium
 python-dotenv
-tenacity
