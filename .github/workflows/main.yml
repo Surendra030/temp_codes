@@ -1,4 +1,5 @@
 name: Upload PDF to Mega Cloud
+
 on:
   push:
     branches:
@@ -26,11 +27,15 @@ jobs:
           MONGO_URL: ${{ secrets.MONGO_URL }}
         run: |
           python download_files.py
+      - name: Create directory for downloaded files
+        run: mkdir -p ./downloaded-files  # Ensure the directory exists
+      - name: List files in the directory
+        run: ls -l ./downloaded-files  # Verify files exist before upload
       - name: Upload downloaded files as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: mega-files
-          path: ./downloaded-files
+          path: ./downloaded-files  # Ensure the correct path is used
 
   process-and-upload:
     runs-on: ubuntu-latest
