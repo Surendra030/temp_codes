@@ -32,11 +32,15 @@ def mega_download_url(link):
         m = mega.login(keys[0], keys[1])
         
         # Download the file to the specified folder
-        file_name = m.download_url(link, dest_folder=download_folder)
+        file_name = m.download_url(link)
+        # Move the downloaded file to the download folder
+        destination_path = os.path.join(download_folder, os.path.basename(file_name))
+        os.rename(file_name, destination_path) 
         
         # Check if the file has been downloaded successfully
-        if os.path.exists(os.path.join(download_folder, file_name)):
-            return os.path.join(download_folder, file_name)
+        if os.path.exists(destination_path):
+            return destination_path
+        
     except Exception as e:
         print(f"Error downloading URL {link}: {e}")
         return False
