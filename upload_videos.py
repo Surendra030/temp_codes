@@ -28,7 +28,7 @@ def upload_to_mega(keys, file_path):
         return file_link if file_link else False
 
     except Exception as e:
-        print(f"Error uploading file {process_file_name} to Mega: {e}")
+        print(f"Error uploading file {file_name} to Mega: {e}")
         return False
 
 def main():
