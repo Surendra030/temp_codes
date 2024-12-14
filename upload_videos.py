@@ -23,11 +23,12 @@ def upload_to_mega(keys, file_path):
                 m.delete(file_name)
             except Exception as e:
                 print(f"Error deleting file {file_name}: {e}")
-            
+        else:
+            print("No file link found.")
         return file_link if file_link else False
 
     except Exception as e:
-        print(f"Error uploading file {file_path} to Mega: {e}")
+        print(f"Error uploading file {process_file_name} to Mega: {e}")
         return False
 
 def main():
