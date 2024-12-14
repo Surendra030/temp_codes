@@ -10,12 +10,15 @@ def upload_to_mega(keys, file_path):
 
         # Find the folder
         folder = m.find('Mushoku', exclude_deleted=True)
-        if not folder:
+        print(f"Find folder output: {folder}")
+        if folder and isinstance(folder, tuple):
+            folder = folder[0]  # Extract the first element if tuple
+        folder_handle = folder['h'] if folder else None
+
+        if not folder_handle:
             raise ValueError("Folder 'Mushoku' not found in Mega account.")
-        folder_handle = folder[0]['h'] if isinstance(folder, list) else folder['h']
 
         # Get file name and process name
-        
         process_file_name = file_name.replace(".", "_process.")
 
         # Rename file locally if necessary
@@ -27,9 +30,9 @@ def upload_to_mega(keys, file_path):
 
         if file_link:
             print(f"Uploaded {process_file_name}: {file_link}")
-            # Optionally delete file from Mega if required
+            # Optionally delete file from Mega
             try:
-                m.delete(file_name)
+                m.delete(file_obj['h'])  # Delete by handle
             except Exception as e:
                 print(f"Error deleting file {file_name} from Mega: {e}")
         else:
@@ -43,6 +46,7 @@ def upload_to_mega(keys, file_path):
     except Exception as e:
         print(f"Error uploading file {file_name} to Mega: {e}")
         return False
+
 
 
 def main():
