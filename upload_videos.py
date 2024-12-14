@@ -12,7 +12,7 @@ def upload_to_mega(keys, file_path):
         folder = m.find('Mushoku', exclude_deleted=True)
         print(f"Find folder output: {folder}")
         if folder and isinstance(folder, tuple):
-            folder = folder[0]  # Extract the first element if tuple
+            folder = folder[1]  # Extract the first element if tuple
         folder_handle = folder['h'] if folder else None
 
         if not folder_handle:
