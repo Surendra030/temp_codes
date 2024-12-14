@@ -72,7 +72,7 @@ def main():
         if downloaded_files:
             print(f"Uploading downloaded files as artifacts: {downloaded_files}")
             # You can use GitHub Actions 'upload-artifact' action to save them
-            return downloaded_files
+            print(os.listdir())
         else:
             print("No files to upload as artifacts.")
             return []

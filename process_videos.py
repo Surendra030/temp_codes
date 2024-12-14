@@ -1,14 +1,9 @@
 import os
-import moviepy.editor as mp
-from mega import Mega
 import random
-
-keys = os.getenv("M_TOKEN")
-keys = keys.split("_")
-mega = Mega()
+import moviepy.editor as mp
 
 def add_moving_logo(inputfile, outputname, logoimage):
-    inputfile  = str(inputfile)
+    inputfile = str(inputfile)
     try:
         # Load the video
         video = mp.VideoFileClip(inputfile)
@@ -52,48 +47,30 @@ def add_moving_logo(inputfile, outputname, logoimage):
         print(f"Error while adding logo to video: {e}")
         return False
 
-def upload_to_mega(keys, file_name):
-    try:
-        mega = Mega()
-        m = mega.login(keys[0], keys[1])
-        folder = m.find('Mushoku', exclude_deleted=True)
-        folder_handle = folder['h']
-
-        try:
-            m.delete(file_name)
-        except Exception as e:
-            print(f"Error deleting file {file_name}: {e}")
-
-        file_obj = m.upload(file_name, folder_handle)
-        file_link = m.get_upload_link(file_obj)
-        return file_link if file_link else False
-
-    except Exception as e:
-        print(f"Error uploading file {file_name} to Mega: {e}")
-        return False
-
 def main():
     try:
-        # Fetch downloaded files from artifacts
-        artifact_path = './downloaded-files'  # Adjust the path to the downloaded files
-        files = os.listdir(artifact_path)
+        input_path = './downloaded-files'
+        output_path = './processed-files'
+
+        # Ensure output folder exists
+        os.makedirs(output_path, exist_ok=True)
+
+        files = os.listdir(input_path)
 
         for file_name in files:
-            input_file = os.path.join(artifact_path, file_name)
-            output_file = f"processed_{file_name}"
+            input_file = os.path.join(input_path, file_name)
+            output_file = os.path.join(output_path, file_name)
 
             # Add moving logo to the video
             result = add_moving_logo(input_file, output_file, 'img.png')
 
             if result:
-                # Upload the processed video back to Mega
-                upload_to_mega(keys, output_file)
-
-                # Clean up
-                os.remove(input_file)
-                os.remove(output_file)
+                print(f"Processed and saved: {output_file}")
+            else:
+                print(f"Failed to process: {input_file}")
 
     except Exception as e:
         print(f"Error in main process: {e}")
 
-main()
+if __name__ == "__main__":
+    main()

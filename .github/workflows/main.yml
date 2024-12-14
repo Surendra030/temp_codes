@@ -37,17 +37,35 @@ jobs:
       - name: Set up Python 3.12
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       - name: Install dependencies (Python 3.12)
         run: |
           sudo apt-get install -y poppler-utils
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install moviepy==1.0.0
 
       - name: Process and upload files
         env:
           M_TOKEN: ${{ secrets.M_TOKEN }}
           MONGO_URL: ${{ secrets.MONGO_URL }}
         run: |
-          python process_and_upload.py
+          python process_videos.py
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies (Python 3.12)
+        run: |
+          sudo apt-get install -y poppler-utils
+          python -m pip install --upgrade pip
+          pip install mega.py
+
+      - name: Process and upload files
+        env:
+          M_TOKEN: ${{ secrets.M_TOKEN }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+        run: |
+          python upload_videos.py
