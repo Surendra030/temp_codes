@@ -36,7 +36,7 @@ def mega_download_url(link):
         # Move the downloaded file to the download folder
         destination_path = os.path.join(download_folder, os.path.basename(file_name))
         os.rename(file_name, destination_path) 
-        
+        print(os.listdir())
         # Check if the file has been downloaded successfully
         if os.path.exists(destination_path):
             return destination_path
