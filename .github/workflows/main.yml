@@ -12,51 +12,39 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: |
           sudo apt-get install -y poppler-utils
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Download files from Mega
         env:
           M_TOKEN: ${{ secrets.M_TOKEN }}
           MONGO_URL: ${{ secrets.MONGO_URL }}
         run: |
           python download_files.py
-      - name: Create directory for downloaded files
-        run: mkdir -p ./downloaded-files  # Ensure the directory exists
-      - name: List files in the directory
-        run: ls -l ./downloaded-files  # Verify files exist before upload
-      - name: Upload downloaded files as artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: mega-files
-          path: ./downloaded-files  # Ensure the correct path is used
 
-  process-and-upload:
-    runs-on: ubuntu-latest
-    needs: download-files
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+     
+
+      # Optional: Set up Python 3.12, if needed for another part of the process
       - name: Set up Python 3.12
         uses: actions/setup-python@v2
         with:
           python-version: '3.12'
-      - name: Install dependencies
+
+      - name: Install dependencies (Python 3.12)
         run: |
           sudo apt-get install -y poppler-utils
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: mega-files  # Match the artifact name from the first job
-          path: ./downloaded-files  # Location to save downloaded files
+
       - name: Process and upload files
         env:
           M_TOKEN: ${{ secrets.M_TOKEN }}
