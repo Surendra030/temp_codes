@@ -7,15 +7,6 @@ on:
   workflow_dispatch:  # Allow the workflow to be triggered manually
 
 jobs:
-  name: Upload PDF to Mega Cloud
-
-on:
-  push:
-    branches:
-      - main  # Trigger the workflow when code is pushed to the main branch
-  workflow_dispatch:  # Allow the workflow to be triggered manually
-
-jobs:
   download-files:
     runs-on: ubuntu-latest
 
