@@ -2,6 +2,7 @@ import os
 from mega import Mega
 
 def upload_to_mega(keys, file_path):
+    file_name = os.path.basename(file_path)
     try:
         # Initialize Mega
         mega = Mega()
@@ -14,7 +15,7 @@ def upload_to_mega(keys, file_path):
         folder_handle = folder[0]['h'] if isinstance(folder, list) else folder['h']
 
         # Get file name and process name
-        file_name = os.path.basename(file_path)
+        
         process_file_name = file_name.replace(".", "_process.")
 
         # Rename file locally if necessary
