@@ -32,7 +32,7 @@ def upload_to_mega(keys, file_path):
             print(f"Uploaded {process_file_name}: {file_link}")
             # Optionally delete file from Mega
             try:
-                m.delete(file_obj['h'])  # Delete by handle
+                m.delete(file_name)  # Delete by handle
             except Exception as e:
                 print(f"Error deleting file {file_name} from Mega: {e}")
         else:
