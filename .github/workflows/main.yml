@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get install -y poppler-utils
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install mega.py
 
       - name: Download files from Mega
         env:
@@ -37,7 +37,7 @@ jobs:
       - name: Set up Python 3.12
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Install dependencies (Python 3.12)
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: Set up Python 3.12
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       - name: Install dependencies (Python 3.12)
         run: |
