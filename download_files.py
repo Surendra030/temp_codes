@@ -22,14 +22,25 @@ def fetch_video_file_links(keys, m, all_files):
 
 def mega_download_url(link):
     try:
+        download_folder="downloaded-files"
+        # Create the download folder if it does not exist
+        if not os.path.exists(download_folder):
+            os.makedirs(download_folder)
+
+        # Login to Mega
         mega = Mega()
         m = mega.login(keys[0], keys[1])
-        file_name = m.download_url(link)
-        if os.path.exists(file_name):
-            return file_name
+        
+        # Download the file to the specified folder
+        file_name = m.download_url(link, dest_folder=download_folder)
+        
+        # Check if the file has been downloaded successfully
+        if os.path.exists(os.path.join(download_folder, file_name)):
+            return os.path.join(download_folder, file_name)
     except Exception as e:
         print(f"Error downloading URL {link}: {e}")
         return False
+    
 
 def main():
     try:
