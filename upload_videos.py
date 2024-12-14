@@ -2,19 +2,20 @@ import os
 from mega import Mega
 
 def upload_to_mega(keys, file_path):
+    file_path = str(file_path).split("/")[-1]
+        
+    file_name = os.path.basename(file_path)
+    process_file_name = file_name.split(".")
+    process_file_name = f"{process_file_name[0]}_process.{process_file_name[-1]}"
+
     try:
         mega = Mega()
         m = mega.login(keys[0], keys[1])
         folder = m.find('Mushoku', exclude_deleted=True)
         folder_handle = folder['h']
         
-        file_path = str(file_path).split("/")[-1]
-        
-        file_name = os.path.basename(file_path)
-        process_file_name = file_name.split(".")
         
         
-        process_file_name = f"{process_file_name[0]}_process.{process_file_name[-1]}"
         
         file_obj = m.upload(process_file_name, folder_handle)
         file_link = m.get_upload_link(file_obj)
@@ -28,7 +29,7 @@ def upload_to_mega(keys, file_path):
         return file_link if file_link else False
 
     except Exception as e:
-        print(f"Error uploading file {file_name} to Mega: {e}")
+        print(f"Error uploading file {file_name}- {process_file_name} to Mega: {e}")
         return False
 
 def main():
