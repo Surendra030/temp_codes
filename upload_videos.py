@@ -7,16 +7,23 @@ def upload_to_mega(keys, file_path):
         m = mega.login(keys[0], keys[1])
         folder = m.find('Mushoku', exclude_deleted=True)
         folder_handle = folder['h']
-
+        
+        file_path = str(file_path).split("/")[-1]
+        
         file_name = os.path.basename(file_path)
-
-        try:
-            m.delete(file_name)
-        except Exception as e:
-            print(f"Error deleting file {file_name}: {e}")
-
-        file_obj = m.upload(file_path, folder_handle)
+        process_file_name = file_name.split(".")
+        
+        
+        process_file_name = f"{process_file_name[0]}_process.{process_file_name[-1]}"
+        
+        file_obj = m.upload(process_file_name, folder_handle)
         file_link = m.get_upload_link(file_obj)
+        if file_link:
+            try:
+                m.delete(file_name)
+            except Exception as e:
+                print(f"Error deleting file {file_name}: {e}")
+            
         return file_link if file_link else False
 
     except Exception as e:
