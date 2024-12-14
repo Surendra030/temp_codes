@@ -1,7 +1,7 @@
 import os
 from mega import Mega
 
-def upload_to_mega(keys, file_path):
+def upload_to_mega(keys, file_path,all_files):
     file_name = os.path.basename(file_path)
     try:
         # Initialize Mega
@@ -32,14 +32,18 @@ def upload_to_mega(keys, file_path):
             print(f"Uploaded {process_file_name}: {file_link}")
             # Optionally delete file from Mega
             try:
-                m.delete(file_name)  # Delete by handle
+                for key,snippet in all_files.items():
+                    if snippet['a']['n'] == file_name:
+                        print(f"File : {file_name} found.")
+                        m.delete(snippet['h'])
+                        print("File Deleted Sucessfully.")
             except Exception as e:
                 print(f"Error deleting file {file_name} from Mega: {e}")
         else:
             print("Failed to generate file link after upload.")
 
         # Rename back to the original name (optional)
-        os.rename(process_file_name, file_path)
+        os.remove(process_file_name)
 
         return file_link if file_link else False
 
@@ -55,7 +59,10 @@ def main():
         keys = os.getenv("M_TOKEN", "").split("_")
         if len(keys) != 2:
             raise ValueError("Invalid M_TOKEN format. Expected 'email_password'.")
-
+        
+        mega = Mega()
+        m = mega.login(keys[0],keys[1])
+        all_files=  m.get_files()
         # Input directory
         input_path = './processed-files'
         files = os.listdir(input_path)
@@ -64,7 +71,7 @@ def main():
             file_path = os.path.join(input_path, file_name)
 
             # Upload to Mega
-            link = upload_to_mega(keys, file_path)
+            link = upload_to_mega(keys, file_path,all_files)
 
             if link:
                 print(f"Uploaded {file_name}: {link}")
